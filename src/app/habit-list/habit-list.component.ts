@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HabitService } from '../habit.service';
 
 @Component({
   selector: 'app-habit-list',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
     <app-habit-form (addHabit)="onAddHabit($event)"></app-habit-form>
     <ul>
       <app-habit-item
-        *ngFor="let habit of habits"
+        *ngFor="let habit of habits | async"
         [habit]="habit"
       ></app-habit-item>
     </ul>
@@ -15,24 +17,15 @@ import { Component, OnInit } from '@angular/core';
   styles: [],
 })
 export class HabitListComponent implements OnInit {
-  habits = [
-    {
-      id: 1,
-      title: 'FOO',
-    },
-    {
-      id: 2,
-      title: 'BAR',
-    },
-  ];
-  constructor() {}
+  habits: Observable<any>;
+
+  constructor(private habitService: HabitService) {}
 
   onAddHabit(newHabit) {
-    this.habits.push({
-      ...newHabit,
-      id: this.habits.length + 1,
-    });
+    this.habitService.addHabit(newHabit);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.habits = this.habitService.getHabits();
+  }
 }
