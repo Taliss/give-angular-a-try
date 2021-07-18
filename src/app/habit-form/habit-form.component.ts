@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { Habit } from '../habit';
 
 @Component({
   selector: 'app-habit-form',
@@ -13,7 +14,7 @@ import { FormBuilder } from '@angular/forms';
 })
 export class HabitFormComponent implements OnInit {
   habitForm: any;
-  @Output() addHabit = new EventEmitter<{ title: string }>();
+  @Output() addHabit = new EventEmitter<Omit<Habit, 'id'>>();
 
   constructor(private fromBuilder: FormBuilder) {
     this.habitForm = this.fromBuilder.group({
@@ -21,7 +22,7 @@ export class HabitFormComponent implements OnInit {
     });
   }
 
-  onSubmit(newHabit) {
+  onSubmit(newHabit: Omit<Habit, 'id'>) {
     this.addHabit.emit(newHabit);
     this.habitForm.reset();
   }

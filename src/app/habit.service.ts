@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { Habit } from './habit';
 
 @Injectable({
   providedIn: 'root',
@@ -26,11 +27,11 @@ export class HabitService {
 
   constructor() {}
 
-  getHabits(): Observable<any> {
+  getHabits(): Observable<Habit[]> {
     return of(this.habits);
   }
 
-  addHabit(newHabit) {
+  addHabit(newHabit: { title: string }) {
     this.habits.push({
       ...newHabit,
       id: this.habits.length + 1,
