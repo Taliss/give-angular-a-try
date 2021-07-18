@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
@@ -13,6 +13,8 @@ import { FormBuilder } from '@angular/forms';
 })
 export class HabitFormComponent implements OnInit {
   habitForm: any;
+  @Output() addHabit = new EventEmitter<{ title: string }>();
+
   constructor(private fromBuilder: FormBuilder) {
     this.habitForm = this.fromBuilder.group({
       title: '',
@@ -20,10 +22,7 @@ export class HabitFormComponent implements OnInit {
   }
 
   onSubmit(newHabit) {
-    this.habits.push({
-      ...newHabit,
-      id: this.habits.length + 1,
-    });
+    this.addHabit.emit(newHabit);
     this.habitForm.reset();
   }
 
